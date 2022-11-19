@@ -1,0 +1,134 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child */
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+Node* newNode(int val) {
+    Node* temp = new Node;
+    temp->data = val;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+Node* buildTree(string str) {
+    // Corner Case
+    if (str.length() == 0 || str[0] == 'N') return NULL;
+
+    // Creating vector of strings from input
+    // string after spliting by space
+    vector<string> ip;
+
+    istringstream iss(str);
+    for (string str; iss >> str;) ip.push_back(str);
+
+    // Create the root of the tree
+    Node* root = newNode(stoi(ip[0]));
+
+    // Push the root to the queue
+    queue<Node*> queue;
+    queue.push(root);
+
+    // Starting from the second element
+    int i = 1;
+    while (!queue.empty() && i < ip.size()) {
+
+        // Get and remove the front of the queue
+        Node* currNode = queue.front();
+        queue.pop();
+
+        // Get the current node's value from the string
+        string currVal = ip[i];
+
+        // If the left child is not null
+        if (currVal != "N") {
+
+            // Create the left child for the current node
+            currNode->left = newNode(stoi(currVal));
+
+            // Push it to the queue
+            queue.push(currNode->left);
+        }
+
+        // For the right child
+        i++;
+        if (i >= ip.size()) break;
+        currVal = ip[i];
+
+        // If the right child is not null
+        if (currVal != "N") {
+
+            // Create the right child for the current node
+            currNode->right = newNode(stoi(currVal));
+
+            // Push it to the queue
+            queue.push(currNode->right);
+        }
+        i++;
+    }
+
+    return root;
+}
+
+
+// } Driver Code Ends
+//User function Template for C++
+
+class Solution{
+    public:
+    map<int,vector<int>> lvl1;
+    map<int,vector<int>> lvl2;
+    void makeVector(Node* root,int lvl,map<int,vector<int>>& lvlVector){
+        if(root==NULL) return;
+        lvlVector[lvl].push_back(root->data);
+        makeVector(root->left,lvl+1,lvlVector);
+        makeVector(root->right,lvl+1,lvlVector);
+    }
+    bool isAnagram(vector<int>& vec1,vector<int>& vec2){
+        sort(vec1.begin(),vec1.end());
+        sort(vec2.begin(),vec2.end());
+        int m = vec1.size();
+        int n = vec2.size();
+        if(m!=n) return false;
+        for(int i=0;i<n;i++){
+            if(vec1[i]!=vec2[i]) return false;
+        }
+        return true;
+    }
+    bool areAnagrams(Node *root1, Node *root2){
+        makeVector(root1,0,lvl1);
+        makeVector(root2,0,lvl2);
+        int m = lvl1.size();
+        int n = lvl2.size();
+        if(m!=n) return false;
+        for(int i=0;i<n;i++){
+            if(!isAnagram(lvl1[i],lvl2[i])) return false;
+        }
+        return true;
+    }
+};
+
+//{ Driver Code Starts.
+
+/* Driver program to test size function*/
+int main() {
+    int t;
+    scanf("%d\n", &t);
+    while (t--) {
+        string treeString1, treeString2;
+        getline(cin, treeString1);
+        Node *root1 = buildTree(treeString1);
+        getline(cin, treeString2);
+        Node *root2 = buildTree(treeString2);
+        Solution ob;
+        cout << ob.areAnagrams(root1, root2) << endl;
+    }
+    return 0;
+}
+
+// } Driver Code Ends
