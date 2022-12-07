@@ -1,0 +1,34 @@
+// Return the Kth smallest element in the given BST
+
+//APPROACH - MORRIS INORDER TRAVERSAL
+    int KthSmallestElement(Node *root, int K) {
+        int ans=-1;
+        Node* curr = root;
+        K--;
+        while(curr!=NULL && K>=0){
+            if(curr->left==NULL){
+                K--;
+                curr = curr->right;
+            }
+            else{
+                Node* pred = curr->left;
+                while(pred->right!=curr && pred->right!=NULL) 
+                    pred=pred->right;
+                if(pred->right==NULL){
+                    pred->right = curr;
+                    curr = curr->left;
+                }
+                else{
+                    pred->right = NULL;
+                    K--;
+                    curr = curr->right;
+                }
+            
+            }
+            if(K==0 && curr){
+                ans = curr->data;
+            }
+        }
+        return ans;
+            // add code here.
+    }
