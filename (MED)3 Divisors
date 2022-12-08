@@ -1,0 +1,74 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h> 
+using namespace std; 
+
+// } Driver Code Ends
+class Solution{
+public:
+    vector<int> primes;
+    bool isPrime(int num){
+        if(find(primes.begin(),primes.end(),num)!=primes.end()){
+            return true;
+        }
+        else{
+            if(primes.size()>=1 && num < *(primes.end()-1)){
+                return false;
+              }
+            else{
+                if (num <= 1) return false;
+                if (num <= 3) {
+                    primes.push_back(num);
+                    return true;
+                }
+                if (num % 2 == 0 || num % 3 == 0) return false;
+                for (int i = 5; i * i <= num; i = i + 6)
+                    if (num % i == 0 || num % (i + 2) == 0) return false;
+                primes.push_back(num);
+                return true;
+            }
+        }
+    }
+    int calcNum(int num){
+        int cnt=0;
+        for(int i=0;i<=num;i++){
+            if(isPrime(i)){
+                int sqrd = i*i;
+                if(sqrd<=num){
+                    cnt++;
+                }
+                else break;
+            }
+        }
+        return cnt;
+    }
+    vector<int> threeDivisors(vector<long long> query, int q) {
+        vector<int> ans;
+        for(int i=0;i<q;i++){
+            int num = query[i];
+            ans.push_back(calcNum(num));
+        }
+        return ans;
+    }
+};
+
+//{ Driver Code Starts.
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--){
+        int q;cin>>q;
+        vector<long long> query(q);
+        for(int i=0;i<q;i++){
+            cin>>query[i];
+        }
+        Solution ob;
+            
+        vector<int> ans = ob.threeDivisors(query,q);
+        for(auto cnt : ans) {
+            cout<< cnt << endl;
+        }
+    }
+    return 0;
+}
+// } Driver Code Ends
