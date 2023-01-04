@@ -1,0 +1,48 @@
+//{ Driver Code Starts
+// Initial Template for C++
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function Template for C++
+class Solution {
+  public:
+    static bool like(const vector<int> &vec1,const vector<int>&vec2){
+        return vec1[1]!=vec2[1]?vec1[1]<vec2[1]:(vec1[0]!=vec2[0]?vec1[0]<vec2[0]:vec1[2]>vec2[2]);
+    }
+    
+    int maximum_profit(int n, vector<vector<int>> &intervals) {
+        sort(intervals.begin(),intervals.end(),like);
+        map<int,int> memo;
+        memo[-1] = 0;
+        for(auto& itr : intervals){
+            int s = itr[0], e = itr[1], p = itr[2];
+            int max_profit = max((prev(memo.upper_bound(e)))->second,(prev(memo.upper_bound(s)))->second+p);
+            memo[e] = max_profit;
+        }
+        return memo.rbegin()->second;
+        // Write your code here.
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<vector<int>> intervals(n, vector<int>(3));
+        for (int i = 0; i < n; i++) {
+            cin >> intervals[i][0] >> intervals[i][1] >> intervals[i][2];
+        }
+        Solution obj;
+        cout << obj.maximum_profit(n, intervals) << endl;
+    }
+    return 0;
+}
+
+// } Driver Code Ends
