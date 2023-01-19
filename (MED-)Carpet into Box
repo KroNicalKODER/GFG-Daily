@@ -1,0 +1,67 @@
+//{ Driver Code Starts
+//Initial Template for C++
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+//User function Template for C++
+
+class Solution{
+    public:
+    bool isFit(int a,int b,int c,int d){
+        if((a<=c && b<=d) || (a<=d && b<=c)) return true;
+        return false;
+    }
+    void fold(int& a,int& b,int& c,int& d,int &ans){
+        
+        if(!isFit(a,b,c,d)){
+            if(b>d){
+                b/=2;
+                ans++;
+            }
+            if(isFit(a,b,c,d)) return;
+            if(a>c) {
+                a/=2;
+                ans++;
+            }
+        }
+    }
+    int carpetBox(int A, int B, int C, int D){
+        int ans = 0;
+        int ans2 = 0;
+        int a = A,b=B,c=C,d=D;
+        while(!isFit(A,B,C,D)){
+            fold(A,B,C,D,ans);
+            if(isFit(A,B,C,D)) break;
+        }
+        while(!isFit(b,a,c,d)){
+            fold(b,a,c,d,ans2);
+            if(isFit(b,a,c,d)) break;
+        }
+        
+        return min(ans,ans2);
+        //code here
+    }
+};
+
+
+//{ Driver Code Starts.
+
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int A,B,C,D;
+        cin>>A>>B>>C>>D;
+        
+        Solution ob;
+
+        int ans = ob.carpetBox(A,B,C,D);
+        
+        cout<<ans<<endl;
+    }
+}
+// } Driver Code Ends
