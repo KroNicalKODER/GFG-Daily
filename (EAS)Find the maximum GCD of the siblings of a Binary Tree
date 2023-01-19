@@ -1,0 +1,47 @@
+//User function Template for C++
+
+/*
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+
+class Solution
+{
+public:
+    int ans = 0;
+    int GCD = 0;
+    void solve(Node* root){
+        if(root==NULL) return;
+        int left = -1;
+        if(root->left) left = root->left->data;
+        int right = -1;
+        if(root->right) right = root->right->data;
+        if(left!=-1 && right!=-1){
+            int currGCD = __gcd(left,right);
+            if(currGCD == GCD){
+                ans = max(ans,root->data);
+            } else if(currGCD > GCD) {
+                GCD = currGCD;
+                ans = root->data;
+            }
+        }
+        solve(root->left);
+        solve(root->right);
+    }
+    int maxGCD( Node* root){
+        solve(root);
+        return ans;
+        //code here
+    }
+};
+
