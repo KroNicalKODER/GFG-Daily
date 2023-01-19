@@ -1,0 +1,74 @@
+//User function Template for C++
+const int N=1e6+5;
+int freq[N];
+class Tree{
+public:
+  vector<long long> bit;
+  Tree(){
+    bit=vector<long long>(N);
+  }
+  void addNode(int node,int v)
+  {
+     for(;node<N;node+=(node&(-node)))
+      bit[node]+=v;
+  }
+  long long getNode(int node)
+  {
+    long long x=0;
+    for(;node>0;node-=(node&(-node)))
+      x+=bit[node];
+    return x;
+  }
+};
+Tree T1,T2;
+
+
+class Solution{
+public:
+  vector<int> maximumToys(int N,vector<int> A,int Q,vector<vector<int>> Queries){
+    vector<int> ansvec;
+
+    for(auto i:A){
+      freq[i]++;
+    }
+
+    for(int i=0;i<A.size();i++){
+      T1.addNode(A[i],A[i]);
+      T2.addNode(A[i],1);
+    }
+    for(auto query:Queries){
+      long long C=query[0];
+      for(int j=2;j<query.size();j++){
+        T1.addNode(A[query[j]-1],-A[query[j]-1]);
+        T2.addNode(A[query[j]-1],-1);
+      }
+      long long lw=1,hg=1e6;
+      long long pos=1e6;
+      while(lw<=hg){
+        int mid=(lw+hg)/2;
+        if(T1.getNode(mid)>=C){
+          pos=mid;
+          hg=mid-1;
+        }
+        else{
+          lw=mid+1;
+        }
+      }
+
+      long long ans=T2.getNode(pos-1);
+      long long mx=min((C-T1.getNode(pos-1))/pos,(long long)freq[pos]);
+      ans+=mx;
+      ansvec.push_back(ans);
+      for(int j=2;j<query.size();j++){
+        T1.addNode(A[query[j]-1],A[query[j]-1]);
+        T2.addNode(A[query[j]-1],1);
+      }
+    }
+    for(int i=0;i<A.size();i++){
+      T1.addNode(A[i],-A[i]);
+      T2.addNode(A[i],-1);
+      freq[A[i]]--;
+    }
+    return ansvec;
+  }
+};
