@@ -1,0 +1,83 @@
+
+class Solution{
+public:
+      long long merge(vector<int>&arr, int left, int mid, int right) {
+        int n1=mid-left+1;
+        int n2=right-mid;
+    
+        int leftArr[n1];
+        int rightArr[n2];
+    
+        for(int i=0; i<n1; i++)
+        {
+            leftArr[i]=arr[left+i];
+        }
+        for(int i=0; i<n2; i++)
+        {
+            rightArr[i]=arr[mid+1+i];
+        }
+    
+        int i=0;
+        int j=0;
+        int k=left;
+        long long ans=0;
+        while(i<n1 && j<n2){
+            if(leftArr[i]<=rightArr[j]){
+                arr[k]=leftArr[i];
+                i++;
+            }
+            else{
+                arr[k]=rightArr[j];
+                ans+=n1-i;
+                j++;
+            }
+            k++;
+        }
+    
+        while(i<n1){
+            arr[k]=leftArr[i];
+            i++;
+            k++;
+        }
+        while(j<n2){
+            arr[k]=rightArr[j];
+            j++;
+            k++;
+        }
+    
+        return ans;
+    }
+    
+    long long mergeSort(vector<int>& array, int const begin, int const end){
+        if (begin >= end) return 0;
+        long long inv = 0;
+        auto mid = begin + (end - begin) / 2;
+        inv+=mergeSort(array, begin, mid);
+        inv+=mergeSort(array, mid + 1, end);
+        inv+=merge(array, begin, mid, end);
+        return inv;
+    }
+    
+    long long countSubstring(string S){
+        vector<int>arr(S.size());
+        
+        for(int i=0;i<S.size(); i++){
+            if(S[i]=='1')arr[i]=1;
+            else{
+                arr[i]=-1;
+            }
+        }
+        vector<int>cumSum(S.size());
+        cumSum[0]=arr[0];
+        for(int i=1;i<arr.size(); i++){
+            cumSum[i]=cumSum[i-1]+arr[i];
+        }
+        long long count=0;
+        for(int i=0;i<cumSum.size(); i++){
+            if(cumSum[i]>0)count++;
+        }
+        reverse(cumSum.begin(),cumSum.end());
+        long long inv=mergeSort(cumSum,0,cumSum.size()-1);
+        return count+inv;
+      }
+};
