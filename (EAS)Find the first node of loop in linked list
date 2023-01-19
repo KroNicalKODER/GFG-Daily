@@ -1,0 +1,35 @@
+//User function Template for C++
+
+/*struct Node
+{
+    int data;
+    struct Node *next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+
+*/
+class Solution
+{
+    public:
+     //Function to find first node if the linked list has a loop.
+    int findFirstNode(Node* head)
+    {
+        Node* fast = head;
+        Node* slow = head;
+        while(fast!=NULL && fast->next!=NULL){
+            fast = fast->next->next;
+            slow = slow->next;
+            if(fast==slow) break;
+        }
+        if(fast==NULL || fast->next == NULL) return -1;
+        Node* ans = head;
+        while(ans!=slow){
+            ans = ans->next;
+            slow = slow->next;
+        }
+        return slow->data;
+        // your code here
+    }
+};
