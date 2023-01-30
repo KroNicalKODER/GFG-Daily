@@ -1,0 +1,60 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution {
+  public:
+    int solve(int a, int b) {
+        int andd = a & b;
+        int ac =a,bc =b;
+        int ans = 0;
+        while(andd!=0 || ac!=0){
+            if(!(andd & 1) && ( ac & 1 )) {
+                ans++;
+                break;
+            }
+            andd>>=1;
+            ac>>=1;
+        }
+        andd=a&b;
+        while(andd!=0 || bc!=0){
+            if(!(andd & 1) && ( bc & 1 )) {
+                ans++;
+                break;
+            }
+            andd>>=1;
+            bc>>=1;
+        }
+        
+        
+        return ans;
+        // code here
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main(){
+    int t;
+    scanf("%d ",&t);
+    while(t--){
+        
+        int a;
+        scanf("%d",&a);
+        
+        
+        int b;
+        scanf("%d",&b);
+        
+        Solution obj;
+        int res = obj.solve(a, b);
+        
+        printf("%d\n", res);
+        
+    }
+}
+
+// } Driver Code Ends
