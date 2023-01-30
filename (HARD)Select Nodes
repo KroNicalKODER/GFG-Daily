@@ -1,0 +1,72 @@
+//{ Driver Code Starts
+//Initial Template for C++
+
+#include<bits/stdc++.h> 
+using namespace std; 
+
+// } Driver Code Ends
+//User function Template for C++
+
+class Solution{
+    public:
+    
+    vector< vector<int> > graph;
+    
+    int ans = 0;
+    void makeGraph(vector<vector<int>>& edges){
+        int n = edges.size();
+        for(auto itr : edges) {
+            graph[itr[0]].push_back(itr[1]);
+            graph[itr[1]].push_back(itr[0]);
+        }
+    }
+    
+    bool solve(int curr,vector<bool>& vis){
+        
+        bool ret = false;
+        vis[curr] = true;
+        for(auto child : graph[curr]){
+            if(!vis[child] && !solve(child,vis)){
+                ret = true;
+            }
+        }
+        if(ret==true) ans++;
+        return ret;
+    }
+    
+    int countVertex(int N, vector<vector<int>>edges){
+        graph.resize(N+1);
+        makeGraph(edges);
+        vector<bool> vis(N+1,false);    
+        solve(1,vis);
+        return ans;
+        // code here
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() 
+{ 
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int N;
+        cin >> N;
+        vector<vector<int>>edges;
+        for(int i = 0; i < N-1; i++){
+            int x,y;
+            cin >> x >> y;
+            vector<int> edge;
+            edge.push_back(x);
+            edge.push_back(y);
+            edges.push_back(edge);
+        }
+        
+        Solution ob;
+        cout << ob.countVertex(N, edges) << endl;
+    }
+    return 0; 
+} 
+// } Driver Code Ends
