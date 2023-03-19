@@ -1,0 +1,54 @@
+//{ Driver Code Starts
+//Initial Template for C++
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+//User function Template for C++
+class Solution {
+  public:
+  
+    long long solve(int N, vector<int>& A, int M) {
+        
+        vector<int> vec((2 * N) + 1, 0);
+        long long curr =N, ans = 0, num = 0;
+        vec[curr]++;
+        for (int i = 0; i < N; i++) {
+            if (A[i] >= M) {
+                num += vec[curr];
+                curr += 1;
+            }
+            else{
+                num -= vec[curr-1];
+                curr -= 1;
+            }
+            ans += num;
+            vec[curr]++;
+        }
+        return ans;
+    }
+  
+    long long countSubarray(int N,vector<int> A,int M) {
+        long long ans = abs(solve(N,A,M) - solve(N,A,M+1));
+        return ans;
+        // code here
+    }
+};
+
+//{ Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int N, M;
+        cin>>N>>M;
+        vector<int> A(N);
+        for(int i=0;i<N;i++){
+            cin>>A[i];
+        }
+        Solution obj;
+        auto ans = obj.countSubarray(N,A,M);
+        cout<<ans<<endl;
+    }
+}  
+// } Driver Code Ends
