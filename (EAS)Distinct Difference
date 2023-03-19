@@ -1,0 +1,91 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+
+class Array
+{
+public:
+    template <class T>
+    static void input(vector<T> &A,int n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            scanf("%d ",&A[i]);
+        }
+    }
+
+    template <class T>
+    static void print(vector<T> &A)
+    {
+        for (int i = 0; i < A.size(); i++)
+        {
+            cout << A[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+
+// } Driver Code Ends
+class Solution {
+  public:
+    vector<int> getDistinctDifference(int N, vector<int> &A) {
+        int leftDist = 0;
+        vector<int> LD(N);
+        vector<int> RD(N);
+        map<int,bool> vis;
+        for(int i=0;i<N;i++){
+            if(vis[A[i]] == true) {
+                LD[i] = leftDist;
+                continue;
+            }
+            LD[i] = leftDist;
+            leftDist++;
+            vis[A[i]] = true;
+        }
+        vis.clear();
+        leftDist = 0;
+        for(int i = N-1 ; i >= 0 ; i--){
+            if(vis[A[i]] == true) {
+                RD[i] = leftDist;
+                continue;
+            }
+            RD[i] = leftDist;
+            leftDist++;
+            vis[A[i]] = true;
+        }
+        
+        vector<int> ans(N);
+        for(int i=0;i<N;i++) {
+            ans[i] = LD[i] - RD[i];
+        }
+        return ans;
+        // code here
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main(){
+    int t;
+    scanf("%d ",&t);
+    while(t--){
+        
+        int N;
+        scanf("%d",&N);
+        
+        
+        vector<int> A(N);
+        Array::input(A,N);
+        
+        Solution obj;
+        vector<int> res = obj.getDistinctDifference(N, A);
+        
+        Array::print(res);
+        
+    }
+}
+
+// } Driver Code Ends
