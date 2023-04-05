@@ -1,0 +1,57 @@
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution {
+  public:
+    int countSpecialNumbers(int N, vector<int> arr) {
+        unordered_map<int, int> present;
+        unordered_set<int> eleVec;
+        int maxi = 0;
+        for (int itr : arr) {
+            present[itr]++;
+            eleVec.insert(itr);
+            maxi = max(itr, maxi);
+        }
+        unordered_set<int> ansVec;
+        for (auto i : eleVec) {
+            for (int j = 2 * i; j <= maxi; j += i) {
+                if (eleVec.find(j) != eleVec.end()) ansVec.insert(j);
+            }
+        }
+        int ans = 0;
+
+        for (auto itr : present) {
+            if (itr.second > 1) ans += itr.second;
+            else if (ansVec.find(itr.first) != ansVec.end()) ans++;
+        }
+        return ans;
+        // Code here
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int N;
+        cin >> N;
+        vector<int> arr(N);
+        for (int i = 0; i < N; i++) {
+            cin >> arr[i];
+        }
+
+        Solution ob;
+        cout << ob.countSpecialNumbers(N, arr) << endl;
+    }
+    return 0;
+}
+// } Driver Code Ends
