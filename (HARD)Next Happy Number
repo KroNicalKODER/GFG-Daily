@@ -1,0 +1,39 @@
+
+
+class Solution{
+public:
+
+    vector<int> notHappy;
+    long long cal(int num){
+        long long sum = 0;
+        while(num){
+            long long dig = num % 10;
+            num/=10;
+            sum += dig*dig;
+        }
+        return sum;
+    }
+    bool isNotHappy(int num){
+        int n = num;
+        int temp = num;
+        while(1) {
+            if(notHappy[temp] == 1) return true;
+            if(notHappy[temp] == 0) return false;
+            notHappy[temp] = 1;
+            temp = cal(temp);
+            if(temp==1) return false;
+            if(temp==num) return true;
+        }
+    }
+
+    int nextHappy(int N){
+        notHappy = vector<int>(100001,-1);
+        
+        for(int i=N+1;i<100001;i++){
+            if(!isNotHappy(i)) return i;
+        }
+        return 1;
+        
+        // code here
+    }
+};
