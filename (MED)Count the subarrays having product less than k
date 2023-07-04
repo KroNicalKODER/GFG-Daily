@@ -1,0 +1,19 @@
+class Solution{
+  public:
+    int countSubArrayProductLessThanK(vector<int>& arr, int n, long long k) {
+        long long temp=1;
+        int s=0;
+        int ans = 0;
+        
+        for(int i=0;i<n;i++){
+            temp *= arr[i];
+            while(temp >= k && s < n) {
+                temp /= arr[s];
+                s++;
+            } 
+            if(temp < k) ans += i-s+1;
+        }
+        
+        return ans;
+    }
+};
